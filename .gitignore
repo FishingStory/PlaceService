@@ -1,0 +1,32 @@
+bin/
+obj/
+out/
+
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+# Restore lock file is intentionally committed; uncomment to ignore it:
+# packages.lock.json
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+launchSettings.json
+
+appsettings.*.json
+!appsettings.Development.json
+*.pfx
+*.p12
+
+TestResults/
+coverage/
+*.trx
+*.coveragexml
+
+.idea/
+*.sln.iml
+
+.DS_Store
+._*
