@@ -2,8 +2,8 @@ namespace PlaceService.Application.DTOs;
 
 public class RequestSingleLocationDto
 {
-    public string Latitude { get; set; } =  string.Empty;
+    public double Latitude { get; set; } =  0.0;
     
-    public string Longitude { get; set; } = string.Empty;
+    public double Longitude { get; set; } = 0.0;
     
 }

@@ -27,12 +27,6 @@ public class PlaceController : ControllerBase
         return Ok();
     }
     
-    [HttpDelete]
-    public ActionResult RemoveLocation(RemoveLocationDto removeLocationDto)
-    {
-        return Ok();
-    }
-    
     [HttpPut]
     public ActionResult UpdateLocation(UpdateLocationDto updateLocationDto)
     {
