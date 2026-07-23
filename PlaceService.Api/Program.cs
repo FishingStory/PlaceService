@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using PlaceService.Api.Options;
 using PlaceService.Infrastructure.DbContexts;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,13 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<PlaceServiceDbContext>(
-    options => options
-        .UseNpgsql(
-            builder.Configuration["Location:ConnectionStrings:DefaultConnection"],
-            o => o.UseNetTopologySuite()
-        ));
+PlaceServiceDbContextOptions options = new();
+builder.Configuration.GetSection("Location").Bind(options);
 
+builder.Services.AddDbContextWithCustomOptions(options);
 
 var app = builder.Build();
 
