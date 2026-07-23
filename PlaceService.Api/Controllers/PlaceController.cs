@@ -9,7 +9,7 @@ public class PlaceController : ControllerBase
 {
     
     [HttpGet]
-    public ActionResult<ResponseLocationDto> GetLocationByCords(RequestSingleLocationDto requestSingleLocationDto)
+    public ActionResult<ResponseLocationDto> GetLocationByCords(LocationDto locationDto)
     {
         return Ok();
     }

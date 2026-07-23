@@ -1,6 +1,6 @@
 namespace PlaceService.Application.DTOs;
 
-public class RequestSingleLocationDto
+public class LocationDto
 {
     public double Latitude { get; set; } =  0.0;
     

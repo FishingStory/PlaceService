@@ -1,6 +1,6 @@
 namespace PlaceService.Application.DTOs;
 
-public class UpdateLocationDto : RequestSingleLocationDto
+public class UpdateLocationDto : LocationDto
 {
     public Guid Id { get; set; }
     

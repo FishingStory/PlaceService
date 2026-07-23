@@ -15,17 +15,17 @@ public class LocationService : ILocationService
         throw new NotImplementedException();
     }
 
-    public async Task<List<ResponseLocationDto>> AddLocation(RequestSingleLocationDto location)
+    public async Task<List<ResponseLocationDto>> AddLocation(LocationDto location)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<ResponseLocationDto>> UpdateLocation(RequestSingleLocationDto location)
+    public async Task<List<ResponseLocationDto>> UpdateLocation(LocationDto location)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<ResponseLocationDto>> DeleteLocation(RequestSingleLocationDto location)
+    public async Task<List<ResponseLocationDto>> DeleteLocation(LocationDto location)
     {
         throw new NotImplementedException();
     }

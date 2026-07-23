@@ -4,7 +4,7 @@ using PlaceService.Application.DTOs;
 namespace PlaceService.Infrastructure.Validations;
 
 public class BaseDtoValidator<T> : AbstractValidator<T> 
-    where T : RequestSingleLocationDto
+    where T : LocationDto
 {
     public BaseDtoValidator()
     {
