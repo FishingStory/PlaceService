@@ -15,6 +15,7 @@ packages/
 *.sln.docstates
 launchSettings.json
 
+PlaceService.Api/appsettings.json
 appsettings.*.json
 !appsettings.Development.json
 *.pfx

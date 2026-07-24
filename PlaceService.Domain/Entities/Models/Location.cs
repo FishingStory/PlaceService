@@ -1,4 +1,6 @@
-using System.Drawing;
+
+
+using NetTopologySuite.Geometries;
 
 namespace PlaceService.Domain.Entities.Models;
 
@@ -6,10 +8,10 @@ public class Location
 {
     public Guid Id { get; set; }
     
-    public String Name { get; set; } = String.Empty;
-    
-    public Point Coordinates { get; set; } =  new Point();
-    
+    public string Name { get; set; } = string.Empty;
+
+    public Point Coordinates { get; set; } = Point.Empty;
+
     public Double AvgTemperature { get; set; } = 0.0;
     
     public Double AvgPressure { get; set; } = 0.0;

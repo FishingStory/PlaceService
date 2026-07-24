@@ -9,7 +9,7 @@ public class PlaceController : ControllerBase
 {
     
     [HttpGet]
-    public ActionResult<ResponseLocationDto> GetLocationByCords(RequestSingleLocationDto requestSingleLocationDto)
+    public ActionResult<ResponseLocationDto> GetLocationByCords(LocationDto locationDto)
     {
         return Ok();
     }
@@ -23,12 +23,6 @@ public class PlaceController : ControllerBase
     
     [HttpPost]
     public ActionResult<ResponseLocationDto> AddNewLocation(CreateLocationDto createLocationDto)
-    {
-        return Ok();
-    }
-    
-    [HttpDelete]
-    public ActionResult RemoveLocation(RemoveLocationDto removeLocationDto)
     {
         return Ok();
     }
