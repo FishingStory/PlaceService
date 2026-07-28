@@ -63,4 +63,5 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
     {
         await _locationRepository.DeleteLocation(location.Id);
     }
+    
 }
