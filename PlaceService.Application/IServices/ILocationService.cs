@@ -9,9 +9,9 @@ public interface ILocationService
     
     public Task<ResponseLocationDto> GetLocation(Guid id);
     
-    public Task<List<ResponseLocationDto>> AddLocation(LocationDto location);
+    public Task<ResponseLocationDto> AddLocation(CreateLocationDto location);
     
-    public Task<List<ResponseLocationDto>> UpdateLocation(LocationDto location);
+    public Task<ResponseLocationDto> UpdateLocation(UpdateLocationDto location);
     
-    public Task<List<ResponseLocationDto>> DeleteLocation(LocationDto location);
+    public Task DeleteLocation(DeleteLocationDto location);
 }
