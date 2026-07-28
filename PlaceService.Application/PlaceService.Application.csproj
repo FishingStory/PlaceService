@@ -10,4 +10,8 @@
       <PackageReference Include="NetTopologySuite" Version="2.6.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\PlaceService.Domain\PlaceService.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
