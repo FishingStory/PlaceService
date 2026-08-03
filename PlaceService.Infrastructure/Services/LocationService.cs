@@ -8,23 +8,21 @@ namespace PlaceService.Infrastructure.Services;
 
 public class LocationService(GeometryFactory geometryFactory, ILocationRepository repository, ILocationMapper locationMapper) : ILocationService
 {
-    private readonly GeometryFactory _geometryFactory =  geometryFactory;
-    private readonly ILocationRepository _locationRepository = repository;
-    private readonly ILocationMapper _locationMapper = locationMapper;
+    
     
     public async Task<List<ResponseLocationDto>> GetNearbyLocations(RequestNearbyLocationDto requestSingleLocationDto)
     {
-        var point =  _geometryFactory
+        var point =  geometryFactory
             .CreatePoint(new Coordinate(requestSingleLocationDto.Latitude, requestSingleLocationDto.Longitude));
 
         try
         {
-            var nearbyLocations = await _locationRepository
+            var nearbyLocations = await repository
                 .GetNearbyLocations(point, requestSingleLocationDto.Distance);
 
             // write a request for temperature and pressure
 
-            return _locationMapper.MapMultipleLocationToResponseLocationDto(nearbyLocations);
+            return locationMapper.MapMultipleLocationToResponseLocationDto(nearbyLocations);
         }
         catch (ArgumentException e)
         {
@@ -36,11 +34,11 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
     {
         try
         {
-            var location = await _locationRepository.GetLocation(id);
+            var location = await repository.GetLocation(id);
             
             // write a request for temperature and pressure
             
-            return _locationMapper.MapLocationToResponseLocationDto(location);
+            return locationMapper.MapLocationToResponseLocationDto(location);
         }
         catch (ArgumentNullException e)
         {
@@ -52,13 +50,13 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
     {
         try
         {
-            var newLocation = _locationMapper.MapCreateLocationDtoToLocation(location);
+            var newLocation = locationMapper.MapCreateLocationDtoToLocation(location);
         
-            var addedLocation = await _locationRepository.AddLocation(newLocation);
+            var addedLocation = await repository.AddLocation(newLocation);
         
             // write a request for temperature and pressure
             
-            return _locationMapper.MapLocationToResponseLocationDto(addedLocation);
+            return locationMapper.MapLocationToResponseLocationDto(addedLocation);
         }
         catch (ArgumentException e)
         {
@@ -71,13 +69,13 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
     {
         try
         {
-            var locationToUpdate = _locationMapper.MapUpdateLocationDtoToLocation(location);
+            var locationToUpdate = locationMapper.MapUpdateLocationDtoToLocation(location);
        
-            var updatedLocation = await _locationRepository.UpdateLocation(locationToUpdate);
+            var updatedLocation = await repository.UpdateLocation(locationToUpdate);
        
             // write a request for temperature and pressure
        
-            return _locationMapper.MapLocationToResponseLocationDto(updatedLocation);
+            return locationMapper.MapLocationToResponseLocationDto(updatedLocation);
         }
         catch (ArgumentException e)
         {
@@ -90,7 +88,7 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
     {
         try
         {
-            await _locationRepository.DeleteLocation(location.Id);
+            await repository.DeleteLocation(location.Id);
         }
         catch (ArgumentException e)
         {

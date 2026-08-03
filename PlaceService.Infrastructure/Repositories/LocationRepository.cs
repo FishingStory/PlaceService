@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
-using PlaceService.Application.DTOs;
-using PlaceService.Application.IMappers;
+
+
 using PlaceService.Domain.IRepositories;
 using PlaceService.Infrastructure.DbContexts;
 using Location = PlaceService.Domain.Entities.Models.Location;
@@ -11,11 +10,9 @@ namespace PlaceService.Infrastructure.Repositories;
 
 public class LocationRepository(PlaceServiceDbContext context) : ILocationRepository
 {
-    private readonly PlaceServiceDbContext _context = context;
-
     public async Task<List<Location>> GetNearbyLocations(Point userLocation, double distance)
     {
-        var nearbyLocations = await _context
+        var nearbyLocations = await context
             .Locations.AsNoTracking()
             .Where(l => userLocation.IsWithinDistance(l.Coordinates, distance))
             .OrderBy(l => userLocation.Distance(l.Coordinates))
@@ -30,7 +27,7 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
 
     public async Task<Location> GetLocation(Guid id)
     {
-        var location = await _context
+        var location = await context
             .Locations.AsNoTracking()
             .Where(l => l.Id == id)
             .FirstOrDefaultAsync();
@@ -41,45 +38,45 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
 
     public async Task<Location> AddLocation(Location location)
     {
-        var potentialDuplicate = await _context
+        var potentialDuplicate = await context
             .Locations.AsNoTracking()
             .FirstOrDefaultAsync(l => l.Coordinates.EqualsTopologically(location.Coordinates));
-
+        
         if (potentialDuplicate != null)
             throw new ArgumentException("Such location already exists");
 
-        await _context.Locations.AddAsync(location);
-        await _context.SaveChangesAsync();
+        await context.Locations.AddAsync(location);
+        await context.SaveChangesAsync();
 
         return location;
     }
 
     public async Task DeleteLocation(Guid locationId)
     {
-        var locationToDelete = await _context
+        var locationToDelete = await context
             .Locations.AsNoTracking()
             .FirstOrDefaultAsync(l => l.Id == locationId);
         
         if (locationToDelete == null)
             throw new ArgumentException("Location not found");
 
-        _context.Locations.Remove(locationToDelete);
+        context.Locations.Remove(locationToDelete);
     }
 
     public async Task<Location> UpdateLocation(Location location)
     {
-        var locationToUpdate = _context
+        var locationToUpdate = await context
             .Locations.AsNoTracking()
-            .FirstOrDefault(l => l.Id == location.Id);
+            .FirstOrDefaultAsync(l => l.Id == location.Id);
         
         if (locationToUpdate == null)
             throw new ArgumentException("Location not found");
         
         await DeleteLocation(locationToUpdate.Id);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         var updatedLocation = await AddLocation(location);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
 
         return updatedLocation;
     }
