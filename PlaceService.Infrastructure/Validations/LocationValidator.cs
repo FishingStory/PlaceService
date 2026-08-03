@@ -9,7 +9,6 @@ public class LocationValidator : AbstractValidator<Location>
     {
         RuleFor(l => l.Id)
             .NotNull()
-            .NotEmpty()
             .WithMessage("Id cannot be empty");
         
         RuleFor(l => l.Name)

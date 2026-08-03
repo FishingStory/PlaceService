@@ -41,4 +41,14 @@ public class LocationMapper(GeometryFactory geometryFactory): ILocationMapper
         };
     }
     
+    public List<ResponseLocationDto> MapMultipleLocationToResponseLocationDto(List<Location> nearbyLocations)
+    {
+        var nearbyLocationDtOs = new List<ResponseLocationDto>();
+
+        
+        foreach (var nearbyLocation in nearbyLocations) //todo
+            nearbyLocationDtOs.Add(MapLocationToResponseLocationDto(nearbyLocation));
+        
+        return nearbyLocationDtOs;
+    }
 }

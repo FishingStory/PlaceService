@@ -9,7 +9,6 @@ public class DeleteLocationDtoValidator<T> : AbstractValidator<T> where T : Dele
     {
         RuleFor(l => l.Id)
             .NotNull()
-            .NotEmpty()
             .WithMessage("Id cannot be empty");
         
     }

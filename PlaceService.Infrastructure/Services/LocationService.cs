@@ -14,54 +14,89 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
     
     public async Task<List<ResponseLocationDto>> GetNearbyLocations(RequestNearbyLocationDto requestSingleLocationDto)
     {
-        
         var point =  _geometryFactory
             .CreatePoint(new Coordinate(requestSingleLocationDto.Latitude, requestSingleLocationDto.Longitude));
 
-        var nearbyLocations = await _locationRepository
-            .GetNearbyLocations(point, requestSingleLocationDto.Distance);
-        
-        // write a request for temperature and pressure
-        var nearbyLocationDtOs = new List<ResponseLocationDto>();
-        foreach (var nearbyLocation in nearbyLocations)
-            nearbyLocationDtOs.Add(_locationMapper.MapLocationToResponseLocationDto(nearbyLocation));
-        return nearbyLocationDtOs;
+        try
+        {
+            var nearbyLocations = await _locationRepository
+                .GetNearbyLocations(point, requestSingleLocationDto.Distance);
+
+            // write a request for temperature and pressure
+
+            return _locationMapper.MapMultipleLocationToResponseLocationDto(nearbyLocations);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException(e.Message, e);
+        }
     }
 
     public async Task<ResponseLocationDto> GetLocation(Guid id)
     {
-        var location = await _locationRepository.GetLocation(id);
-
-        // write a request for temperature and pressure
-        
-        return _locationMapper.MapLocationToResponseLocationDto(location);
+        try
+        {
+            var location = await _locationRepository.GetLocation(id);
+            
+            // write a request for temperature and pressure
+            
+            return _locationMapper.MapLocationToResponseLocationDto(location);
+        }
+        catch (ArgumentNullException e)
+        {
+            throw new ArgumentException(e.Message, e);
+        }
     }
 
     public async Task<ResponseLocationDto> AddLocation(CreateLocationDto location)
     {
-        var newLocation = _locationMapper.MapCreateLocationDtoToLocation(location);
+        try
+        {
+            var newLocation = _locationMapper.MapCreateLocationDtoToLocation(location);
         
-        var addedLocation = await _locationRepository.AddLocation(newLocation);
+            var addedLocation = await _locationRepository.AddLocation(newLocation);
         
-        // write a request for temperature and pressure
+            // write a request for temperature and pressure
+            
+            return _locationMapper.MapLocationToResponseLocationDto(addedLocation);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException(e.Message, e);
+        }
         
-        return _locationMapper.MapLocationToResponseLocationDto(addedLocation);
     }
 
     public async Task<ResponseLocationDto> UpdateLocation(UpdateLocationDto location)
     {
-       var locationToUpdate = _locationMapper.MapUpdateLocationDtoToLocation(location);
+        try
+        {
+            var locationToUpdate = _locationMapper.MapUpdateLocationDtoToLocation(location);
        
-       var updatedLocation = await _locationRepository.UpdateLocation(locationToUpdate);
+            var updatedLocation = await _locationRepository.UpdateLocation(locationToUpdate);
        
-       // write a request for temperature and pressure
+            // write a request for temperature and pressure
        
-       return _locationMapper.MapLocationToResponseLocationDto(updatedLocation);
+            return _locationMapper.MapLocationToResponseLocationDto(updatedLocation);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException(e.Message, e);
+        }
+       
     }
 
     public async Task DeleteLocation(DeleteLocationDto location)
     {
-        await _locationRepository.DeleteLocation(location.Id);
+        try
+        {
+            await _locationRepository.DeleteLocation(location.Id);
+        }
+        catch (ArgumentException e)
+        {
+            throw new ArgumentException(e.Message, e);
+        }    
     }
+    
     
 }

@@ -10,7 +10,6 @@ public class UpdateLocationDtoValidator : AbstractValidator<UpdateLocationDto>
         
         RuleFor(l => l.Id)
             .NotNull()
-            .NotEmpty()
             .WithMessage("Id cannot be empty");
         
         RuleFor(l => l.Name)
