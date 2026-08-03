@@ -1,5 +1,4 @@
-using System.Drawing;
-using NetTopologySuite.Geometries;
+using PlaceService.Application.DTOs;
 using Location = PlaceService.Domain.Entities.Models.Location;
 using Point = NetTopologySuite.Geometries.Point;
 
@@ -11,7 +10,9 @@ public interface ILocationRepository
     
     public Task<Location> GetLocation(Guid id);
     
-    public Task<List<Location>> AddLocation(Location location);
+    public Task<Location> AddLocation(Location location);
     
-    public Task<List<Location>> DeleteLocation(Location location);
+    public Task DeleteLocation(Guid locationId);
+    
+    public Task<Location> UpdateLocation(Location location);
 }

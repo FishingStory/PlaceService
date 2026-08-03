@@ -13,5 +13,5 @@ public interface ILocationService
     
     public Task<ResponseLocationDto> UpdateLocation(UpdateLocationDto location);
     
-    public Task DeleteLocation(Guid id);
+    public Task DeleteLocation(DeleteLocationDto location);
 }

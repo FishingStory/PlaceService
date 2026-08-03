@@ -9,7 +9,6 @@ public class LocationValidator : AbstractValidator<Location>
     {
         RuleFor(l => l.Id)
             .NotNull()
-            .NotEmpty()
             .WithMessage("Id cannot be empty");
         
         RuleFor(l => l.Name)
@@ -20,18 +19,6 @@ public class LocationValidator : AbstractValidator<Location>
 
         RuleFor(l => l.Coordinates)
             .SetValidator(new CoordinatesValidator());
-        
-        RuleFor(l => l.AvgTemperature)
-            .NotNull()
-            .NotEmpty()
-            .InclusiveBetween(-1, 32)
-            .WithMessage("Avg temperature cannot be empty");
-        
-        RuleFor(l => l.AvgPressure)
-            .NotNull()
-            .NotEmpty()
-            .InclusiveBetween(950, 1050)
-            .WithMessage("Avg pressure cannot be empty");
         
     }
 }
