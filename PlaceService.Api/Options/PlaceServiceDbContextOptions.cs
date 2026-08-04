@@ -1,6 +1,7 @@
 namespace PlaceService.Api.Options;
 
-public sealed class PlaceServiceDbContextOptions
+public class PlaceServiceDbContextOptions
 {
+    public const string PlaceServiceDbContextOptionsKey = "Location";
     public string? DefaultConnection { get; set; }
 }
