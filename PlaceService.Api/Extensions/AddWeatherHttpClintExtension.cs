@@ -17,7 +17,9 @@ public static class AddWeatherHttpClintExtension
             {
                 var weatherApiOptions = provider.GetRequiredService<IOptions<WeatherForecastOptions>>().Value;
                 client.BaseAddress = new Uri($"{weatherApiOptions.BaseUrl}");
-            }).AddHttpMessageHandler<WeatherApiDelegateHandler>();
+            })
+            .AddHttpMessageHandler<WeatherApiDelegateHandler>()
+            .AddPolyPipeline();
 
         return services;
     }
