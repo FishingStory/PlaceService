@@ -15,6 +15,7 @@ public static class AddCoreComponentsExtension
         services.AddScoped<ILocationRepository, LocationRepository>();
         services.AddScoped<ILocationService, LocationService>();
         services.AddTransient<ILocationMapper, LocationMapper>();
+        services.AddScoped<IWeatherService, WeatherService>();
         
         return services;
     }

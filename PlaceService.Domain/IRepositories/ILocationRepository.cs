@@ -1,4 +1,3 @@
-using PlaceService.Application.DTOs;
 using Location = PlaceService.Domain.Entities.Models.Location;
 using Point = NetTopologySuite.Geometries.Point;
 
