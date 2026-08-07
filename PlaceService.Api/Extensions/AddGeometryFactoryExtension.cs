@@ -1,6 +1,4 @@
 using NetTopologySuite.Geometries;
-
-
 namespace PlaceService.Api.Extensions;
 
 public static class AddGeometryFactoryExtension

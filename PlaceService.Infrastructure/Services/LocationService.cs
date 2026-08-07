@@ -6,23 +6,29 @@ using PlaceService.Domain.IRepositories;
 
 namespace PlaceService.Infrastructure.Services;
 
-public class LocationService(GeometryFactory geometryFactory, ILocationRepository repository, ILocationMapper locationMapper) : ILocationService
+public class LocationService(
+    GeometryFactory geometryFactory,
+    ILocationRepository repository,
+    ILocationMapper locationMapper,
+    IWeatherService weatherService) : ILocationService
 {
-    
-    
     public async Task<List<ResponseLocationDto>> GetNearbyLocations(RequestNearbyLocationDto requestSingleLocationDto)
     {
-        var point =  geometryFactory
+        var point = geometryFactory
             .CreatePoint(new Coordinate(requestSingleLocationDto.Latitude, requestSingleLocationDto.Longitude));
 
         try
         {
             var nearbyLocations = await repository
                 .GetNearbyLocations(point, requestSingleLocationDto.Distance);
+            
+            var responseNearbyLocations = locationMapper
+                .MapMultipleLocationToResponseLocationDto(nearbyLocations);
+            
+            var filledNearbyLocations = await weatherService
+                .GetWeatherForMultipleLocations(responseNearbyLocations);
 
-            // write a request for temperature and pressure
-
-            return locationMapper.MapMultipleLocationToResponseLocationDto(nearbyLocations);
+            return filledNearbyLocations;
         }
         catch (ArgumentException e)
         {
@@ -35,10 +41,14 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
         try
         {
             var location = await repository.GetLocation(id);
+
+            var responseLocation =  locationMapper
+                .MapLocationToResponseLocationDto(location);
             
-            // write a request for temperature and pressure
+            var filledResponseLocation = await weatherService
+                .GetWeatherForLocation(responseLocation);
             
-            return locationMapper.MapLocationToResponseLocationDto(location);
+            return filledResponseLocation;
         }
         catch (ArgumentNullException e)
         {
@@ -51,18 +61,21 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
         try
         {
             var newLocation = locationMapper.MapCreateLocationDtoToLocation(location);
-        
+
             var addedLocation = await repository.AddLocation(newLocation);
-        
-            // write a request for temperature and pressure
             
-            return locationMapper.MapLocationToResponseLocationDto(addedLocation);
+            var responseLocation = locationMapper
+                .MapLocationToResponseLocationDto(addedLocation);
+            
+            var filledResponseLocation = await weatherService
+                .GetWeatherForLocation(responseLocation);
+            
+            return filledResponseLocation;
         }
         catch (ArgumentException e)
         {
             throw new ArgumentException(e.Message, e);
         }
-        
     }
 
     public async Task<ResponseLocationDto> UpdateLocation(UpdateLocationDto location)
@@ -70,18 +83,22 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
         try
         {
             var locationToUpdate = locationMapper.MapUpdateLocationDtoToLocation(location);
-       
+
             var updatedLocation = await repository.UpdateLocation(locationToUpdate);
-       
-            // write a request for temperature and pressure
-       
-            return locationMapper.MapLocationToResponseLocationDto(updatedLocation);
+
+            var responseLocation = locationMapper
+                .MapLocationToResponseLocationDto(updatedLocation);
+            
+            var filledResponseLocation = await weatherService
+                .GetWeatherForLocation(responseLocation);
+
+
+            return filledResponseLocation;
         }
         catch (ArgumentException e)
         {
             throw new ArgumentException(e.Message, e);
         }
-       
     }
 
     public async Task DeleteLocation(DeleteLocationDto location)
@@ -93,8 +110,6 @@ public class LocationService(GeometryFactory geometryFactory, ILocationRepositor
         catch (ArgumentException e)
         {
             throw new ArgumentException(e.Message, e);
-        }    
+        }
     }
-    
-    
 }

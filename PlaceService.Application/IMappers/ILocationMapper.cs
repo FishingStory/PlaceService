@@ -1,5 +1,6 @@
 using PlaceService.Domain.Entities.Models;
 using PlaceService.Application.DTOs;
+using PlaceService.Domain.Entities.TPAResponseModels;
 
 namespace PlaceService.Application.IMappers;
 
@@ -12,5 +13,7 @@ public interface ILocationMapper
     public ResponseLocationDto MapLocationToResponseLocationDto(Location location);
 
     public List<ResponseLocationDto> MapMultipleLocationToResponseLocationDto(List<Location> nearbyLocations);
+    
+    public ResponseLocationDto AddWeatherInfoToResponseLocationDto(ResponseLocationDto location, LocationWeatherDto weatherInfo);
 
 }

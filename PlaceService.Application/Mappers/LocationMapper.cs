@@ -2,6 +2,7 @@ using PlaceService.Application.DTOs;
 using PlaceService.Application.IMappers;
 using PlaceService.Domain.Entities.Models;
 using NetTopologySuite.Geometries;
+using PlaceService.Domain.Entities.TPAResponseModels;
 using Location = PlaceService.Domain.Entities.Models.Location;
 
 namespace PlaceService.Application.Mappers;
@@ -50,5 +51,15 @@ public class LocationMapper(GeometryFactory geometryFactory): ILocationMapper
             nearbyLocationDtOs.Add(MapLocationToResponseLocationDto(nearbyLocation));
         
         return nearbyLocationDtOs;
+    }
+
+    public ResponseLocationDto AddWeatherInfoToResponseLocationDto(ResponseLocationDto locationDto,
+        LocationWeatherDto weatherInfo)
+    {
+        locationDto.AvgTemperature = weatherInfo.TemperatureC;
+        locationDto.AvgPressure = weatherInfo.PressureMb;
+        locationDto.AvgWindSpeed = weatherInfo.WindMph;
+        
+        return locationDto;
     }
 }

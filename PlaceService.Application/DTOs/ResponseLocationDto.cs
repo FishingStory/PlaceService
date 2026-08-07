@@ -10,7 +10,9 @@ public class ResponseLocationDto
     
     public Point Coordinates { get; set; } =  Point.Empty;
     
-    public Double AvgTemperature { get; set; } = 0.0;
+    public double AvgTemperature { get; set; } = 0.0;
     
-    public Double AvgPressure { get; set; } = 0.0;
+    public double AvgPressure { get; set; } = 0.0;
+    
+    public double AvgWindSpeed { get; set; } = 0.0;
 }

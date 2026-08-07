@@ -16,7 +16,7 @@ packages/
 launchSettings.json
 
 PlaceService.Api/appsettings.json
-appsettings.*.json
+appsettings.*
 !appsettings.Development.json
 *.pfx
 *.p12
