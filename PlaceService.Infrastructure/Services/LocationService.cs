@@ -36,11 +36,11 @@ public class LocationService(
         }
     }
 
-    public async Task<ResponseLocationDto> GetLocation(Guid id)
+    public async Task<ResponseLocationDto> GetLocation(Point coordinates)
     {
         try
         {
-            var location = await repository.GetLocation(id);
+            var location = await repository.GetLocation(coordinates);
 
             var responseLocation =  locationMapper
                 .MapLocationToResponseLocationDto(location);

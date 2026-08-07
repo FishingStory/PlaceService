@@ -25,11 +25,11 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
         return nearbyLocations;
     }
 
-    public async Task<Location> GetLocation(Guid id)
+    public async Task<Location> GetLocation(Point coordinates)
     {
         var location = await context
             .Locations.AsNoTracking()
-            .Where(l => l.Id == id)
+            .Where(l => l.Coordinates.EqualsTopologically(coordinates))
             .FirstOrDefaultAsync();
         
         if (location == null) throw new ArgumentException("Location not found");

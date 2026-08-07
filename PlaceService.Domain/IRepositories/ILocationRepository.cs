@@ -7,7 +7,7 @@ public interface ILocationRepository
 {
     public Task<List<Location>> GetNearbyLocations(Point userLocation, double distance);
     
-    public Task<Location> GetLocation(Guid id);
+    public Task<Location> GetLocation(Point coordinates);
     
     public Task<Location> AddLocation(Location location);
     

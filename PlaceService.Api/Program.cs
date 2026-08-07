@@ -25,6 +25,7 @@ builder.Services.AddDbContextWithCustomOptions();
 builder.Services.AddGeometryFactory();
 builder.Services.AddWeatherHttpClient();
 builder.Services.AddCoreComponents();
+builder.Services.AddValidators();
 
 var app = builder.Build();
 
