@@ -10,7 +10,7 @@ public class ResponseLocationDtoValidator : AbstractValidator<ResponseLocationDt
         RuleFor(l => l.Id)
             .NotNull()
             .WithMessage("Id cannot be empty");
-        
+
         RuleFor(l => l.Name)
             .NotNull()
             .NotEmpty()

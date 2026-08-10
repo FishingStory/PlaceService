@@ -1,6 +1,4 @@
-
 using Microsoft.Extensions.Http.Resilience;
-using Polly;
 
 namespace PlaceService.Api.Extensions;
 
@@ -14,7 +12,7 @@ public static class AddResilientPipelineExtension
             options.Retry.Delay = TimeSpan.FromMilliseconds(250);
             options.Retry.ShouldRetryAfterHeader = true;
 
-            
+
             options.Retry.DisableForUnsafeHttpMethods();
 
             options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(3);

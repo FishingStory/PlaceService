@@ -9,22 +9,17 @@ public static class AddValidatorsExtension
 {
     public static IServiceCollection AddValidators(this IServiceCollection services)
     {
-        services.AddKeyedTransient<IValidator<RequestNearbyLocationDto>, NearbyLocationDtoValidator>(
-            "NearbyLocationDtoValidator");
-        services.AddKeyedTransient<IValidator<ResponseLocationDto>, ResponseLocationDtoValidator>(
-            "ResponseLocationDtoValidator");
-        services.AddKeyedTransient<IValidator<LocationDto>, BaseDtoValidator<LocationDto>>(
-            "LocationDtoValidator");
-        
-        services.AddKeyedTransient<IValidator<CreateLocationDto>, CreateLocationDtoValidator>(
-            "CreateDtoValidator");
-        services.AddKeyedTransient<IValidator<UpdateLocationDto>, UpdateLocationDtoValidator>(
-            "UpdateDtoValidator");
-        services.AddKeyedTransient<IValidator<DeleteLocationDto>, DeleteLocationDtoValidator<DeleteLocationDto>>(
-            "DeleteDtoValidator");
-        
-        services.AddKeyedTransient<IValidator<Location>, LocationValidator>("LocationValidator");
-        
+        services.AddTransient<IValidator<RequestNearbyLocationDto>, NearbyLocationDtoValidator>();
+        services.AddTransient<IValidator<ResponseLocationDto>, ResponseLocationDtoValidator>();
+         
+        services.AddTransient<IValidator<LocationDto>, BaseDtoValidator<LocationDto>>();
+
+        services.AddTransient<IValidator<CreateLocationDto>, CreateLocationDtoValidator>();
+        services.AddTransient<IValidator<UpdateLocationDto>, UpdateLocationDtoValidator>();
+        services.AddTransient<IValidator<DeleteLocationDto>, DeleteLocationDtoValidator<DeleteLocationDto>>();
+
+        services.AddTransient<IValidator<Location>, LocationValidator>();
+
         return services;
     }
 }

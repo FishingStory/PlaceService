@@ -15,16 +15,16 @@ public class LocationService(
     public async Task<List<ResponseLocationDto>> GetNearbyLocations(RequestNearbyLocationDto requestSingleLocationDto)
     {
         var point = geometryFactory
-            .CreatePoint(new Coordinate(requestSingleLocationDto.Latitude, requestSingleLocationDto.Longitude));
+            .CreatePoint(new Coordinate(requestSingleLocationDto.Longitude, requestSingleLocationDto.Latitude));
 
         try
         {
             var nearbyLocations = await repository
                 .GetNearbyLocations(point, requestSingleLocationDto.Distance);
-            
+
             var responseNearbyLocations = locationMapper
                 .MapMultipleLocationToResponseLocationDto(nearbyLocations);
-            
+
             var filledNearbyLocations = await weatherService
                 .GetWeatherForMultipleLocations(responseNearbyLocations);
 
@@ -42,18 +42,28 @@ public class LocationService(
         {
             var location = await repository.GetLocation(coordinates);
 
-            var responseLocation =  locationMapper
+            var responseLocation = locationMapper
                 .MapLocationToResponseLocationDto(location);
-            
+
             var filledResponseLocation = await weatherService
                 .GetWeatherForLocation(responseLocation);
-            
+
             return filledResponseLocation;
         }
         catch (ArgumentNullException e)
         {
             throw new ArgumentException(e.Message, e);
         }
+    }
+
+    public async Task<ResponseLocationDto> GetLocationById(Guid locationId)
+    {
+        var location = await repository.GetLocationById(locationId);
+
+        var responseLocation = locationMapper
+            .MapLocationToResponseLocationDto(location);
+
+        return await weatherService.GetWeatherForLocation(responseLocation);
     }
 
     public async Task<ResponseLocationDto> AddLocation(CreateLocationDto location)
@@ -63,13 +73,13 @@ public class LocationService(
             var newLocation = locationMapper.MapCreateLocationDtoToLocation(location);
 
             var addedLocation = await repository.AddLocation(newLocation);
-            
+
             var responseLocation = locationMapper
                 .MapLocationToResponseLocationDto(addedLocation);
-            
+
             var filledResponseLocation = await weatherService
                 .GetWeatherForLocation(responseLocation);
-            
+
             return filledResponseLocation;
         }
         catch (ArgumentException e)
@@ -88,7 +98,7 @@ public class LocationService(
 
             var responseLocation = locationMapper
                 .MapLocationToResponseLocationDto(updatedLocation);
-            
+
             var filledResponseLocation = await weatherService
                 .GetWeatherForLocation(responseLocation);
 
