@@ -1,4 +1,6 @@
 using Microsoft.Extensions.Http.Resilience;
+using Microsoft.Extensions.Options;
+using PlaceService.Api.Options;
 
 namespace PlaceService.Api.Extensions;
 
@@ -6,25 +8,28 @@ public static class AddResilientPipelineExtension
 {
     public static IHttpClientBuilder AddPolyPipeline(this IHttpClientBuilder httpClientBuilder)
     {
-        httpClientBuilder.AddStandardResilienceHandler(options =>
+        var resiliencePipeline = httpClientBuilder.AddStandardResilienceHandler();
+
+        resiliencePipeline.Configure((options, provider) =>
         {
-            options.Retry.MaxRetryAttempts = 2;
-            options.Retry.Delay = TimeSpan.FromMilliseconds(250);
-            options.Retry.ShouldRetryAfterHeader = true;
+            var resilienceOptions = provider
+                .GetRequiredService<IOptions<WeatherForecastResilienceOptions>>()
+                .Value;
 
-
+            options.Retry.MaxRetryAttempts = resilienceOptions.MaxRetryAttempts;
+            options.Retry.Delay = resilienceOptions.RetryDelay;
+            options.Retry.ShouldRetryAfterHeader = resilienceOptions.ShouldRetryAfterHeader;
             options.Retry.DisableForUnsafeHttpMethods();
 
-            options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(3);
-            options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(10);
+            options.AttemptTimeout.Timeout = resilienceOptions.AttemptTimeout;
+            options.TotalRequestTimeout.Timeout = resilienceOptions.TotalRequestTimeout;
 
-            options.CircuitBreaker.FailureRatio = 0.5;
-            options.CircuitBreaker.MinimumThroughput = 10;
-            options.CircuitBreaker.SamplingDuration =
-                TimeSpan.FromSeconds(30);
-            options.CircuitBreaker.BreakDuration =
-                TimeSpan.FromSeconds(15);
+            options.CircuitBreaker.FailureRatio = resilienceOptions.CircuitBreakerFailureRatio;
+            options.CircuitBreaker.MinimumThroughput = resilienceOptions.CircuitBreakerMinimumThroughput;
+            options.CircuitBreaker.SamplingDuration = resilienceOptions.CircuitBreakerSamplingDuration;
+            options.CircuitBreaker.BreakDuration = resilienceOptions.CircuitBreakerBreakDuration;
         });
+
         return httpClientBuilder;
     }
 }

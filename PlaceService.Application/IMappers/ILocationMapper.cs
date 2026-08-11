@@ -1,6 +1,7 @@
+using NetTopologySuite.Geometries;
 using PlaceService.Application.DTOs;
-using PlaceService.Domain.Entities.Models;
 using PlaceService.Domain.Entities.TPAResponseModels;
+using Location = PlaceService.Domain.Entities.Models.Location;
 
 namespace PlaceService.Application.IMappers;
 
@@ -16,4 +17,6 @@ public interface ILocationMapper
 
     public ResponseLocationDto AddWeatherInfoToResponseLocationDto(ResponseLocationDto location,
         LocationWeatherDto weatherInfo);
+    
+    public Point MapCoordinatesToPoint(double longitude, double latitude);
 }

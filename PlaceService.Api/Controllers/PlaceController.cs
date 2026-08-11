@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NetTopologySuite.Geometries;
 using PlaceService.Application.DTOs;
+using PlaceService.Application.IMappers;
 using PlaceService.Application.IServices;
 
 namespace PlaceService.Api.Controllers;
@@ -9,14 +10,14 @@ namespace PlaceService.Api.Controllers;
 [ApiController]
 public class PlaceController(
     ILocationService locationService,
+    ILocationMapper locationMapper,
     GeometryFactory geometryFactory) : ControllerBase
 {
     [HttpGet("by-coordinates")]
     public async Task<ActionResult<ResponseLocationDto>> GetLocationByCords(
         [FromQuery] LocationDto locationDto)
     {
-        var coordinates = geometryFactory
-            .CreatePoint(new Coordinate(locationDto.Longitude, locationDto.Latitude));
+        var coordinates = locationMapper.MapCoordinatesToPoint(locationDto.Longitude, locationDto.Latitude);
 
         var responseLocationDto = await locationService.GetLocation(coordinates);
 
@@ -33,7 +34,7 @@ public class PlaceController(
     }
 
     [HttpGet("nearby")]
-    public async Task<ActionResult<HashSet<ResponseLocationDto>>> GetNearbyLocations(
+    public async Task<ActionResult<IEnumerable<ResponseLocationDto>>> GetNearbyLocations(
         [FromQuery] RequestNearbyLocationDto requestNearbyLocationDto)
     {
         var responseLocationDtos = await locationService

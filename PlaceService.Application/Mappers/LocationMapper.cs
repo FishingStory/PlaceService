@@ -60,4 +60,10 @@ public class LocationMapper(GeometryFactory geometryFactory) : ILocationMapper
 
         return locationDto;
     }
+
+    public Point MapCoordinatesToPoint(double longitude, double latitude)
+    {
+        return geometryFactory.CreatePoint(
+            new Coordinate(longitude, latitude));
+    }
 }
