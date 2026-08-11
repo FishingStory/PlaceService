@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-
-
 using PlaceService.Domain.IRepositories;
 using PlaceService.Infrastructure.DbContexts;
 using Location = PlaceService.Domain.Entities.Models.Location;
@@ -19,20 +17,32 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
             .Take(15)
             .ToListAsync();
 
-        if (nearbyLocations == null || nearbyLocations.Count == 0) 
+        if (nearbyLocations == null || nearbyLocations.Count == 0)
             throw new ArgumentException("No locations found");
-        
+
         return nearbyLocations;
     }
 
-    public async Task<Location> GetLocation(Guid id)
+    public async Task<Location> GetLocation(Point coordinates)
     {
         var location = await context
             .Locations.AsNoTracking()
-            .Where(l => l.Id == id)
+            .Where(l => l.Coordinates.EqualsTopologically(coordinates))
             .FirstOrDefaultAsync();
-        
+
         if (location == null) throw new ArgumentException("Location not found");
+        return location;
+    }
+
+    public async Task<Location> GetLocationById(Guid locationId)
+    {
+        var location = await context
+            .Locations.AsNoTracking()
+            .FirstOrDefaultAsync(l => l.Id == locationId);
+
+        if (location == null)
+            throw new ArgumentException("Location not found");
+
         return location;
     }
 
@@ -41,7 +51,7 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
         var potentialDuplicate = await context
             .Locations.AsNoTracking()
             .FirstOrDefaultAsync(l => l.Coordinates.EqualsTopologically(location.Coordinates));
-        
+
         if (potentialDuplicate != null)
             throw new ArgumentException("Such location already exists");
 
@@ -56,7 +66,7 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
         var locationToDelete = await context
             .Locations.AsNoTracking()
             .FirstOrDefaultAsync(l => l.Id == locationId);
-        
+
         if (locationToDelete == null)
             throw new ArgumentException("Location not found");
 
@@ -68,10 +78,10 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
         var locationToUpdate = await context
             .Locations.AsNoTracking()
             .FirstOrDefaultAsync(l => l.Id == location.Id);
-        
+
         if (locationToUpdate == null)
             throw new ArgumentException("Location not found");
-        
+
         await DeleteLocation(locationToUpdate.Id);
         await context.SaveChangesAsync();
 

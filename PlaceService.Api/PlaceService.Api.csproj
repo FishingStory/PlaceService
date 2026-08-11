@@ -4,27 +4,27 @@
         <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-      <UserSecretsId>21f8df25-1dec-49e6-99b3-91886d16c2a4</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>21f8df25-1dec-49e6-99b3-91886d16c2a4</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.8.0" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.2" />
-        <PackageReference Include="Polly" Version="8.7.0" />
-        <PackageReference Include="Polly.Extensions" Version="8.7.0" />
+        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.8.0"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.2"/>
+        <PackageReference Include="Polly" Version="8.7.0"/>
+        <PackageReference Include="Polly.Extensions" Version="8.7.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlaceService.Application\PlaceService.Application.csproj" />
-      <ProjectReference Include="..\PlaceService.Domain\PlaceService.Domain.csproj" />
-      <ProjectReference Include="..\PlaceService.Infrastructure\PlaceService.Infrastructure.csproj" />
+        <ProjectReference Include="..\PlaceService.Application\PlaceService.Application.csproj"/>
+        <ProjectReference Include="..\PlaceService.Domain\PlaceService.Domain.csproj"/>
+        <ProjectReference Include="..\PlaceService.Infrastructure\PlaceService.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>

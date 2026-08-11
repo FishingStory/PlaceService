@@ -3,7 +3,7 @@ using PlaceService.Application.DTOs;
 
 namespace PlaceService.Infrastructure.Validations;
 
-public class BaseDtoValidator<T> : AbstractValidator<T> 
+public class BaseDtoValidator<T> : AbstractValidator<T>
     where T : LocationDto
 {
     public BaseDtoValidator()
@@ -14,7 +14,7 @@ public class BaseDtoValidator<T> : AbstractValidator<T>
             .WithMessage("Latitude must be a valid number.")
             .InclusiveBetween(-90, 90)
             .WithMessage("Latitude must be between -90 and 90.");
-        
+
         RuleFor(point => point.Longitude)
             .NotNull()
             .Must(double.IsFinite)

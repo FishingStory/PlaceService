@@ -6,12 +6,12 @@ using Refit;
 
 namespace PlaceService.Api.Extensions;
 
-public static class AddWeatherHttpClintExtension
+public static class AddWeatherHttpClientExtension
 {
     public static IServiceCollection AddWeatherHttpClient(this IServiceCollection services)
     {
         services.AddTransient<WeatherApiDelegateHandler>();
-        
+
         services.AddRefitClient<IWeatherForLocationService>()
             .ConfigureHttpClient((provider, client) =>
             {

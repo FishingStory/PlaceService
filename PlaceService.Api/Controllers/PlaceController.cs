@@ -1,35 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
+using NetTopologySuite.Geometries;
 using PlaceService.Application.DTOs;
+using PlaceService.Application.IMappers;
+using PlaceService.Application.IServices;
 
 namespace PlaceService.Api.Controllers;
 
-[Route("api/place")]
+[Route("api/[controller]")]
 [ApiController]
-public class PlaceController : ControllerBase
+public class PlaceController(
+    ILocationService locationService,
+    ILocationMapper locationMapper,
+    GeometryFactory geometryFactory) : ControllerBase
 {
-    
-    [HttpGet]
-    public ActionResult<ResponseLocationDto> GetLocationByCords(LocationDto locationDto)
+    [HttpGet("by-coordinates")]
+    public async Task<ActionResult<ResponseLocationDto>> GetLocationByCords(
+        [FromQuery] LocationDto locationDto)
     {
-        return Ok();
+        var coordinates = locationMapper.MapCoordinatesToPoint(locationDto.Longitude, locationDto.Latitude);
+
+        var responseLocationDto = await locationService.GetLocation(coordinates);
+
+        return Ok(responseLocationDto);
     }
-    
-    
-    [HttpGet]
-    public ActionResult<HashSet<ResponseLocationDto>> GetNearbyLocations(RequestNearbyLocationDto requestNearbyLocationDto)
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ResponseLocationDto>> GetLocationById(
+        [FromRoute] Guid id)
     {
-        return Ok();
+        var responseLocationDto = await locationService.GetLocationById(id);
+
+        return Ok(responseLocationDto);
     }
-    
+
+    [HttpGet("nearby")]
+    public async Task<ActionResult<IEnumerable<ResponseLocationDto>>> GetNearbyLocations(
+        [FromQuery] RequestNearbyLocationDto requestNearbyLocationDto)
+    {
+        var responseLocationDtos = await locationService
+            .GetNearbyLocations(requestNearbyLocationDto);
+
+        return Ok(responseLocationDtos.ToHashSet());
+    }
+
     [HttpPost]
-    public ActionResult<ResponseLocationDto> AddNewLocation(CreateLocationDto createLocationDto)
+    public async Task<ActionResult<ResponseLocationDto>> AddNewLocation(
+        [FromBody] CreateLocationDto createLocationDto)
     {
-        return Ok();
+        var responseLocationDto = await locationService.AddLocation(createLocationDto);
+
+        return Ok(responseLocationDto);
     }
-    
+
     [HttpPut]
-    public ActionResult UpdateLocation(UpdateLocationDto updateLocationDto)
+    public async Task<ActionResult<ResponseLocationDto>> UpdateLocation(
+        [FromBody] UpdateLocationDto updateLocationDto)
     {
-        return Ok();
+        var responseLocationDto = await locationService.UpdateLocation(updateLocationDto);
+
+        return Ok(responseLocationDto);
     }
 }

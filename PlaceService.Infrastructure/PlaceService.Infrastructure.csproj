@@ -4,25 +4,25 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-      <UserSecretsId>262fc7a1-bad2-4da6-a3ea-04593998b9bd</UserSecretsId>
-  </PropertyGroup>
+        <UserSecretsId>262fc7a1-bad2-4da6-a3ea-04593998b9bd</UserSecretsId>
+    </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PlaceService.Application\PlaceService.Application.csproj" />
-      <ProjectReference Include="..\PlaceService.Domain\PlaceService.Domain.csproj" />
+        <ProjectReference Include="..\PlaceService.Application\PlaceService.Application.csproj"/>
+        <ProjectReference Include="..\PlaceService.Domain\PlaceService.Domain.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="12.1.1" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
-      <PackageReference Include="Refit" Version="14.0.1" />
-      <PackageReference Include="Refit.HttpClientFactory" Version="14.0.1" />
+        <PackageReference Include="FluentValidation" Version="12.1.1"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2"/>
+        <PackageReference Include="Refit" Version="14.0.1"/>
+        <PackageReference Include="Refit.HttpClientFactory" Version="14.0.1"/>
     </ItemGroup>
 
 </Project>

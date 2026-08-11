@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Options;
-using NetTopologySuite.Operation.Overlay.Validate;
 using PlaceService.Api.Options;
 
 namespace PlaceService.Api.ApiDelegateHandlers;
@@ -13,7 +12,7 @@ public class WeatherApiDelegateHandler(IOptions<WeatherForecastOptions> weatherF
         var separator = uri.Contains('?') ? '&' : '?';
 
         request.RequestUri = new Uri($"{uri}{separator}key={weatherForecastOptions.Value.ApiKey}");
-        
+
         return base.SendAsync(request, cancellationToken);
     }
 }
