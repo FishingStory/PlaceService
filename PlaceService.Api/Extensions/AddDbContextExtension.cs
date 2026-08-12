@@ -12,7 +12,7 @@ public static class AddDbContextExtension
         services.AddDbContext<PlaceServiceDbContext>((provider, client) =>
         {
             var options = provider.GetRequiredService<IOptions<PlaceServiceDbContextOptions>>().Value;
-            client.UseNpgsql(options.DefaultConnection);
+            client.UseNpgsql(options.DefaultConnection, npgsql => npgsql.UseNetTopologySuite());
         });
         return services;
     }
