@@ -68,23 +68,18 @@ public class LocationService(
 
     public async Task<ResponseLocationDto> AddLocation(CreateLocationDto location)
     {
+        var newLocation = locationMapper.MapCreateLocationDtoToLocation(location);
+        var addedLocation = await repository.AddLocation(newLocation);
+
         try
         {
-            var newLocation = locationMapper.MapCreateLocationDtoToLocation(location);
-
-            var addedLocation = await repository.AddLocation(newLocation);
-
-            var responseLocation = locationMapper
-                .MapLocationToResponseLocationDto(addedLocation);
-
-            var filledResponseLocation = await weatherService
-                .GetWeatherForLocation(responseLocation);
-
-            return filledResponseLocation;
+            var responseLocation = locationMapper.MapLocationToResponseLocationDto(addedLocation);
+            return await weatherService.GetWeatherForLocation(responseLocation);
         }
-        catch (ArgumentException e)
+        catch
         {
-            throw new ArgumentException(e.Message, e);
+            await repository.DeleteLocation(addedLocation.Id);
+            throw;
         }
     }
 

@@ -11,7 +11,7 @@ public class WeatherService(IWeatherForLocationService weatherForLocationService
     public async Task<ResponseLocationDto> GetWeatherForLocation(ResponseLocationDto locationDto)
     {
         var weatherInfo = await weatherForLocationService
-            .GetWeatherForLocation(locationDto.Coordinates.Y, locationDto.Coordinates.X);
+            .GetWeatherForLocation(locationDto.Latitude, locationDto.Longitude);
 
         if (weatherInfo == null)
             throw new ArgumentException("Bad Coordinates format.");

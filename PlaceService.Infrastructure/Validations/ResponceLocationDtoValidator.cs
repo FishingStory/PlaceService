@@ -3,7 +3,7 @@ using PlaceService.Application.DTOs;
 
 namespace PlaceService.Infrastructure.Validations;
 
-public class ResponseLocationDtoValidator : AbstractValidator<ResponseLocationDto>
+public class ResponseLocationDtoValidator : BaseDtoValidator<ResponseLocationDto>
 {
     public ResponseLocationDtoValidator()
     {
@@ -16,9 +16,6 @@ public class ResponseLocationDtoValidator : AbstractValidator<ResponseLocationDt
             .NotEmpty()
             .Length(3, 25)
             .WithMessage("Name cannot be empty");
-
-        RuleFor(l => l.Coordinates)
-            .SetValidator(new CoordinatesValidator());
 
         RuleFor(l => l.AvgTemperature)
             .Must(double.IsFinite)

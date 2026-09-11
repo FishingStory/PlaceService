@@ -6,7 +6,7 @@ using PlaceService.Application.IServices;
 
 namespace PlaceService.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/place-service")]
 [ApiController]
 public class PlaceController(
     ILocationService locationService,
@@ -43,7 +43,7 @@ public class PlaceController(
         return Ok(responseLocationDtos.ToHashSet());
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<ActionResult<ResponseLocationDto>> AddNewLocation(
         [FromBody] CreateLocationDto createLocationDto)
     {
@@ -52,7 +52,7 @@ public class PlaceController(
         return Ok(responseLocationDto);
     }
 
-    [HttpPut]
+    [HttpPut("update")]
     public async Task<ActionResult<ResponseLocationDto>> UpdateLocation(
         [FromBody] UpdateLocationDto updateLocationDto)
     {

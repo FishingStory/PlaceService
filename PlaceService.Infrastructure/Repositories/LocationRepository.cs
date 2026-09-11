@@ -8,11 +8,17 @@ namespace PlaceService.Infrastructure.Repositories;
 
 public class LocationRepository(PlaceServiceDbContext context) : ILocationRepository
 {
+    private const double MetersPerDegree = 111_320d;
+    
+    private const double CoordinateMatchToleranceDegrees = 0.5 / 1000d;
+
     public async Task<List<Location>> GetNearbyLocations(Point userLocation, double distance)
     {
+        var distanceInDegrees = distance / MetersPerDegree;
+
         var nearbyLocations = await context
             .Locations.AsNoTracking()
-            .Where(l => userLocation.IsWithinDistance(l.Coordinates, distance))
+            .Where(l => userLocation.IsWithinDistance(l.Coordinates, distanceInDegrees))
             .OrderBy(l => userLocation.Distance(l.Coordinates))
             .Take(15)
             .ToListAsync();
@@ -27,7 +33,7 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
     {
         var location = await context
             .Locations.AsNoTracking()
-            .Where(l => l.Coordinates.EqualsTopologically(coordinates))
+            .Where(l => coordinates.IsWithinDistance(l.Coordinates, CoordinateMatchToleranceDegrees))
             .FirstOrDefaultAsync();
 
         if (location == null) throw new ArgumentException("Location not found");
@@ -50,7 +56,9 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
     {
         var potentialDuplicate = await context
             .Locations.AsNoTracking()
-            .FirstOrDefaultAsync(l => l.Coordinates.EqualsTopologically(location.Coordinates));
+            .FirstOrDefaultAsync(l => location.Coordinates.IsWithinDistance(
+                l.Coordinates,
+                CoordinateMatchToleranceDegrees));
 
         if (potentialDuplicate != null)
             throw new ArgumentException("Such location already exists");
@@ -71,6 +79,7 @@ public class LocationRepository(PlaceServiceDbContext context) : ILocationReposi
             throw new ArgumentException("Location not found");
 
         context.Locations.Remove(locationToDelete);
+        await context.SaveChangesAsync();
     }
 
     public async Task<Location> UpdateLocation(Location location)

@@ -36,7 +36,8 @@ public class LocationMapper(GeometryFactory geometryFactory) : ILocationMapper
         {
             Id = location.Id,
             Name = location.Name,
-            Coordinates = location.Coordinates
+            Longitude = location.Coordinates.X,
+            Latitude = location.Coordinates.Y
         };
     }
 

@@ -2,6 +2,7 @@ using PlaceService.Api.Extensions;
 using PlaceService.Api.Filters;
 using PlaceService.Api.Middleware;
 using PlaceService.Api.Options;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,12 @@ builder.Services.AddControllers(options =>
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment()) app.MapOpenApi();
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+}
+
 
 //app.UseHttpsRedirection();
 

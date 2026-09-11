@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -12,9 +13,11 @@ using PlaceService.Infrastructure.DbContexts;
 namespace PlaceService.Infrastructure.Migrations
 {
     [DbContext(typeof(PlaceServiceDbContext))]
-    partial class PlaceServiceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260812120102_LocationFix")]
+    partial class LocationFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +35,7 @@ namespace PlaceService.Infrastructure.Migrations
 
                     b.Property<Point>("Coordinates")
                         .IsRequired()
-                        .HasColumnType("geography(Point,4326)");
+                        .HasColumnType("geometry(Point,4326)");
 
                     b.Property<string>("Name")
                         .IsRequired()

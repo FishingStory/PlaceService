@@ -19,6 +19,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.2"/>
         <PackageReference Include="Polly" Version="8.7.0"/>
         <PackageReference Include="Polly.Extensions" Version="8.7.0"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.16.18" />
     </ItemGroup>
 
     <ItemGroup>
